@@ -18,7 +18,97 @@
         h1 { color: #0d47a1; border-bottom: 3px solid #1565c0; padding-bottom: 0.5rem; }
         h2 { color: #1565c0; margin-top: 2rem; }
         h3 { color: #1976d2; }
-        .date { color: #666; font-size: 1.1rem; margin-bottom: 2rem; }
+        .date { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        
+        /* Audio Player Styles */
+        .audio-player {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+        .audio-player h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .audio-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+        .audio-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        .audio-btn.play-btn {
+            width: 56px;
+            height: 56px;
+            background: white;
+            color: #0d47a1;
+            font-size: 1.5rem;
+        }
+        .audio-btn.play-btn:hover {
+            background: #e3f2fd;
+        }
+        .skip-label {
+            font-size: 0.65rem;
+            position: absolute;
+            bottom: 2px;
+        }
+        .audio-btn.skip {
+            position: relative;
+            font-size: 1rem;
+        }
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
         .companies-box {
             background: #e3f2fd;
             border: 2px solid #1565c0;
@@ -67,6 +157,83 @@
     <h1>🛢️ Daily Oil & Gas Briefing</h1>
     <p class="date">Tuesday, January 28, 2026</p>
     
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <h2>🎧 Listen to Today's Briefing</h2>
+        <div class="audio-controls">
+            <button class="audio-btn skip" onclick="skip(-10)" title="Back 10s">
+                ⏪
+                <span class="skip-label">10</span>
+            </button>
+            <button class="audio-btn play-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause">
+                ▶
+            </button>
+            <button class="audio-btn skip" onclick="skip(10)" title="Forward 10s">
+                ⏩
+                <span class="skip-label">10</span>
+            </button>
+            <div class="progress-container">
+                <div class="progress-bar" onclick="seek(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">2:40</span>
+                </div>
+            </div>
+        </div>
+        <audio id="audioPlayer" src="../audio/2026-01-28.mp3" preload="metadata"></audio>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        }
+        
+        function skip(seconds) {
+            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+        }
+        
+        function seek(e) {
+            const rect = e.target.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+        
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+        
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progressFill.style.width = '0%';
+        });
+    </script>
+    
     <div class="companies-box">
         <h2>📋 O&G Companies in Today's Brief</h2>
         <ul class="company-list">
@@ -98,45 +265,36 @@
         
         <h3>Natural Gas Prices Surge to 3-Year High</h3>
         <ul>
-            <li>Front-month natural gas futures soared <strong>29% to $6.80/MMBtu</strong> — highest since December 2022 (<a href="https://www.barchart.com/story/news/37252510/natural-gas-prices-just-hit-6-how-much-higher-will-they-go-here-amid-winter-storm-fern">Barchart</a>)</li>
-            <li>Gas production in the Lower 48 fell to 106.9 Bcf/d from December's record 109.7 Bcf/d</li>
-            <li>U.S. gas prices surged 117% in recent days before some profit-taking</li>
-            <li>Rystad Energy estimates average January impact of ~390,000 bpd, mostly Permian</li>
+            <li>Futures soared <strong>29% to $6.80/MMBtu</strong> — highest since Dec 2022</li>
+            <li>U.S. gas prices surged 117% in recent days</li>
         </ul>
     </div>
     
     <div class="section">
-        <h2>⚠️ Safety Incidents</h2>
-        <h3>Alaska: "The Beast" Rig Topples on North Slope</h3>
+        <h2>⚠️ Safety Incident — Alaska</h2>
+        <h3>"The Beast" Rig Topples on North Slope</h3>
         <ul>
-            <li><strong>Doyon Rig 26</strong> — the largest mobile drilling rig in North America (nearly 10 million lbs) — tipped over Friday while being transported near Nuiqsut (<a href="https://www.adn.com/business-economy/energy/2026/01/26/massive-north-slope-oil-rig-that-toppled-near-nuiqsut-remains-unstable-officials-say/">ADN</a>)</li>
-            <li><strong>8 workers injured</strong>, all treated and released; no fatalities</li>
-            <li>Up to 4,000 gallons of diesel spilled; ground and waterways frozen, limiting pollution spread</li>
-            <li>Rig remains unstable; investigation underway</li>
-            <li><strong>ConocoPhillips</strong> confirms Willow project drilling will continue using substitute Doyon 142 rig</li>
-            <li>Incident occurred during controversial winter exploration program in National Petroleum Reserve-Alaska; environmental lawsuit pending</li>
+            <li><strong>Doyon Rig 26</strong> — North America's largest mobile drilling rig (10M lbs) — tipped over Friday near Nuiqsut</li>
+            <li>8 workers injured, all treated/released; no fatalities</li>
+            <li>Up to 4,000 gallons diesel spilled; frozen ground limiting spread</li>
+            <li><strong>ConocoPhillips</strong> will continue Willow drilling with substitute rig</li>
         </ul>
     </div>
-
+    
     <div class="section">
-        <h2>🌍 International Developments</h2>
+        <h2>🌍 International</h2>
         <h3>Chevron Seeks Better Terms for Iraq's West Qurna 2</h3>
         <ul>
-            <li><strong>Chevron</strong> is pushing Iraq to improve returns on the West Qurna 2 oilfield before buying the project from Russia's <strong>Lukoil</strong> (<a href="https://www.reuters.com/business/energy/chevron-seeks-better-terms-iraq-before-taking-over-lukoil-oilfield-sources-say-2026-01-27/">Reuters</a>)</li>
-            <li>Iraq nationalized the field earlier this month after U.S. sanctions on Lukoil</li>
-            <li>West Qurna 2 accounts for ~0.5% of global oil supply and ~10% of Iraq's output</li>
-            <li>Lukoil has until <strong>February 28</strong> to sell its assets under U.S. sanctions</li>
-            <li>Any new deal would require Iraqi cabinet approval; negotiations ongoing</li>
-            <li>Would mark further Chevron expansion into Iraq after its $53B Hess acquisition in 2025</li>
+            <li><strong>Chevron</strong> pushing Iraq for improved returns before buying from <strong>Lukoil</strong></li>
+            <li>Iraq nationalized field after U.S. sanctions; Lukoil deadline <strong>Feb 28</strong></li>
+            <li>Field = ~0.5% global oil supply, ~10% Iraq output</li>
         </ul>
         
         <h3>Canada-India Energy Dialogue Restarts</h3>
         <ul>
-            <li>Canadian Energy Minister <strong>Tim Hodgson</strong> at India Energy Week announced plans to boost oil, gas, and uranium exports to India (<a href="https://www.reuters.com/business/energy/canada-is-looking-boost-energy-trade-with-india-energy-minister-says-2026-01-27/">Reuters</a>)</li>
-            <li>Called Canada's 98% energy export reliance on U.S. a "strategic blunder"</li>
             <li>First Canada-India energy dialogue in 8 years</li>
-            <li>Canada currently does not export crude or LNG to India</li>
-            <li>Canada building pipelines to West Coast; sees India's nuclear push as opportunity for uranium exports</li>
+            <li>Minister Hodgson calls 98% U.S. export reliance a "strategic blunder"</li>
+            <li>Eyeing crude, LNG, uranium exports to India</li>
         </ul>
     </div>
     
@@ -144,46 +302,9 @@
         <h2>🤝 M&A Activity</h2>
         <h3>SM Energy–Civitas Merger Clears Final Hurdle</h3>
         <ul>
-            <li>Shareholders of both companies voted "resoundingly" in favor (<a href="https://www.prnewswire.com/news-releases/stockholders-resoundingly-approve-sm-energy-and-civitas-merger-302671754.html">PR Newswire</a>)</li>
-            <li><strong>$12.8B all-stock merger expected to close January 30, 2026</strong></li>
-            <li>SM Energy: 76.5% of shares represented, 99.1% voted yes</li>
-            <li>Civitas: 82.9% of shares represented, 97.7% voted yes</li>
-            <li>Creates a leading Permian and DJ Basin operator with "top-tier assets"</li>
-            <li>Combined company will trade as SM Energy</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>⚡ Power & Energy Infrastructure</h2>
-        <h3>NextEra Eyes Nuclear Expansion for Data Centers</h3>
-        <ul>
-            <li><strong>NextEra Energy</strong> considering expanding nuclear fleet to power data centers; in advanced discussions for additional 9 GW of data center load (<a href="https://www.reuters.com/sustainability/climate-energy/nextera-energy-beats-fourth-quarter-profit-estimates-2026-01-27/">Reuters</a>)</li>
-            <li>Can add 6 GW of new nuclear at existing sites; also evaluating greenfield advanced nuclear</li>
-            <li>43% of projected U.S. power demand growth through 2030 linked to data center buildouts</li>
-            <li>Beat Q4 profit estimates; Florida Power & Light net income up 13.4% YoY</li>
-            <li>NextEra Energy Resources added 13.5 GW of renewables/storage to backlog in 2025</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h2>🔵 Alaska LNG Project</h2>
-        <h3>Glenfarne Announces Progress</h3>
-        <ul>
-            <li><strong>Glenfarne Group</strong> announced major preliminary agreements advancing Alaska LNG into early construction phase (<a href="https://www.newsminer.com/news/local_news/glenfarne-announces-next-wave-of-nonbinding-agreements/article_e78f87fd-9434-4cc2-8525-79e85c3ee6ca.html">News-Miner</a>)</li>
-            <li>Contracts involve pipeline manufacturers, gas suppliers/buyers, and steel pipe orders</li>
-            <li><strong>ExxonMobil</strong> and <strong>Hilcorp Alaska</strong> signed conditional supply contracts</li>
-            <li><strong>ConocoPhillips</strong> "remains firmly committed" to supporting the project</li>
-            <li><strong>Enstar</strong> (Southcentral's largest gas utility) signed non-binding letter for 30-year gas supply</li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h2>🏛️ Regulatory & Policy</h2>
-        <h3>"Drill, Baby, Drill" Industry Response</h3>
-        <ul>
-            <li>Washington Post op-ed notes oil industry is lukewarm on aggressive drilling push with current ~$60-65 WTI prices (<a href="https://www.washingtonpost.com/opinions/2026/01/27/trump-oil-energy-prices/">WaPo</a>)</li>
-            <li>Analysts note Trump administration unlikely to take steps contrary to U.S. oil/gas industry interests</li>
-            <li>Europe's growing reliance on U.S. natural gas increasing Trump's leverage (<a href="https://www.nytimes.com/2026/01/26/business/europe-natural-gas-united-states-russia.html">NYT</a>)</li>
+            <li>Shareholders voted "resoundingly" in favor</li>
+            <li><strong>$12.8B all-stock merger</strong> expected to close January 30, 2026</li>
+            <li>Creates major Permian and DJ Basin operator</li>
         </ul>
     </div>
     
