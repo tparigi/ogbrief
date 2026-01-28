@@ -19,6 +19,30 @@
         h2 { color: #1565c0; margin-top: 2rem; }
         h3 { color: #1976d2; }
         .date { color: #666; font-size: 1.1rem; margin-bottom: 2rem; }
+        .companies-box {
+            background: #e3f2fd;
+            border: 2px solid #1565c0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .companies-box h2 { margin-top: 0; color: #0d47a1; }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .company-list li {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #1565c0;
+            font-size: 0.9rem;
+        }
         .section {
             background: white;
             padding: 1.5rem;
@@ -43,15 +67,76 @@
     <h1>🛢️ Daily Oil & Gas Briefing</h1>
     <p class="date">Tuesday, January 28, 2026</p>
     
+    <div class="companies-box">
+        <h2>📋 O&G Companies in Today's Brief</h2>
+        <ul class="company-list">
+            <li>ExxonMobil</li>
+            <li>Chevron</li>
+            <li>ConocoPhillips</li>
+            <li>Occidental</li>
+            <li>SM Energy</li>
+            <li>Civitas Resources</li>
+            <li>Doyon Drilling</li>
+            <li>Glenfarne Group</li>
+            <li>Hilcorp Alaska</li>
+            <li>NextEra Energy</li>
+            <li>Lukoil</li>
+            <li>Enbridge</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🌨️ Winter Storm Fern — Production Disruptions</h2>
+        <h3>Up to 2 Million bpd Oil Production Lost</h3>
+        <ul>
+            <li>Winter Storm Fern caused <strong>up to 2 million barrels per day</strong> of U.S. oil production losses over the weekend — approximately 15% of total U.S. output (<a href="https://oilprice.com/Latest-Energy-News/World-News/Big-Freeze-Disrupts-US-Oil-and-Gas-Production.html">OilPrice</a>)</li>
+            <li><strong>Permian Basin</strong> hit hardest with ~1.5 million bpd in outages; now recovering to ~700,000 bpd lost (<a href="https://oilprice.com/Latest-Energy-News/World-News/Cold-Snap-Hits-US-Oil-and-Gas-Production.html">OilPrice</a>)</li>
+            <li><strong>ConocoPhillips</strong> Permian production down by 175,000 bpd according to sources</li>
+            <li><strong>ExxonMobil</strong>, <strong>Occidental</strong>, and <strong>Chevron</strong> also reporting production trouble</li>
+            <li>Full recovery expected by end of January</li>
+        </ul>
+        
+        <h3>Natural Gas Prices Surge to 3-Year High</h3>
+        <ul>
+            <li>Front-month natural gas futures soared <strong>29% to $6.80/MMBtu</strong> — highest since December 2022 (<a href="https://www.barchart.com/story/news/37252510/natural-gas-prices-just-hit-6-how-much-higher-will-they-go-here-amid-winter-storm-fern">Barchart</a>)</li>
+            <li>Gas production in the Lower 48 fell to 106.9 Bcf/d from December's record 109.7 Bcf/d</li>
+            <li>U.S. gas prices surged 117% in recent days before some profit-taking</li>
+            <li>Rystad Energy estimates average January impact of ~390,000 bpd, mostly Permian</li>
+        </ul>
+    </div>
+    
     <div class="section">
         <h2>⚠️ Safety Incidents</h2>
         <h3>Alaska: "The Beast" Rig Topples on North Slope</h3>
         <ul>
-            <li><strong>Doyon Rig 26</strong> — the largest mobile drilling rig in North America — tipped over Friday while being transported on an ice road near Nuiqsut</li>
-            <li><strong>8 workers injured</strong>, all treated and released</li>
-            <li>Rig caught fire after collapse; now considered unstable, complicating recovery</li>
-            <li><strong>ConocoPhillips</strong> confirms Willow project drilling will continue using a substitute Doyon rig</li>
-            <li>Incident occurred during controversial winter drilling campaign in National Petroleum Reserve-Alaska; environmental lawsuit pending</li>
+            <li><strong>Doyon Rig 26</strong> — the largest mobile drilling rig in North America (nearly 10 million lbs) — tipped over Friday while being transported near Nuiqsut (<a href="https://www.adn.com/business-economy/energy/2026/01/26/massive-north-slope-oil-rig-that-toppled-near-nuiqsut-remains-unstable-officials-say/">ADN</a>)</li>
+            <li><strong>8 workers injured</strong>, all treated and released; no fatalities</li>
+            <li>Up to 4,000 gallons of diesel spilled; ground and waterways frozen, limiting pollution spread</li>
+            <li>Rig remains unstable; investigation underway</li>
+            <li><strong>ConocoPhillips</strong> confirms Willow project drilling will continue using substitute Doyon 142 rig</li>
+            <li>Incident occurred during controversial winter exploration program in National Petroleum Reserve-Alaska; environmental lawsuit pending</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🌍 International Developments</h2>
+        <h3>Chevron Seeks Better Terms for Iraq's West Qurna 2</h3>
+        <ul>
+            <li><strong>Chevron</strong> is pushing Iraq to improve returns on the West Qurna 2 oilfield before buying the project from Russia's <strong>Lukoil</strong> (<a href="https://www.reuters.com/business/energy/chevron-seeks-better-terms-iraq-before-taking-over-lukoil-oilfield-sources-say-2026-01-27/">Reuters</a>)</li>
+            <li>Iraq nationalized the field earlier this month after U.S. sanctions on Lukoil</li>
+            <li>West Qurna 2 accounts for ~0.5% of global oil supply and ~10% of Iraq's output</li>
+            <li>Lukoil has until <strong>February 28</strong> to sell its assets under U.S. sanctions</li>
+            <li>Any new deal would require Iraqi cabinet approval; negotiations ongoing</li>
+            <li>Would mark further Chevron expansion into Iraq after its $53B Hess acquisition in 2025</li>
+        </ul>
+        
+        <h3>Canada-India Energy Dialogue Restarts</h3>
+        <ul>
+            <li>Canadian Energy Minister <strong>Tim Hodgson</strong> at India Energy Week announced plans to boost oil, gas, and uranium exports to India (<a href="https://www.reuters.com/business/energy/canada-is-looking-boost-energy-trade-with-india-energy-minister-says-2026-01-27/">Reuters</a>)</li>
+            <li>Called Canada's 98% energy export reliance on U.S. a "strategic blunder"</li>
+            <li>First Canada-India energy dialogue in 8 years</li>
+            <li>Canada currently does not export crude or LNG to India</li>
+            <li>Canada building pipelines to West Coast; sees India's nuclear push as opportunity for uranium exports</li>
         </ul>
     </div>
     
@@ -59,33 +144,24 @@
         <h2>🤝 M&A Activity</h2>
         <h3>SM Energy–Civitas Merger Clears Final Hurdle</h3>
         <ul>
-            <li>Shareholders of both companies voted "resoundingly" in favor</li>
+            <li>Shareholders of both companies voted "resoundingly" in favor (<a href="https://www.prnewswire.com/news-releases/stockholders-resoundingly-approve-sm-energy-and-civitas-merger-302671754.html">PR Newswire</a>)</li>
             <li><strong>$12.8B all-stock merger expected to close January 30, 2026</strong></li>
-            <li>Creates a major Permian and DJ Basin operator</li>
-            <li>KeyBanc expressing confidence in the combined entity</li>
-        </ul>
-        
-        <h3>LNG Canada Financing Restructuring</h3>
-        <ul>
-            <li><strong>Shell and Mitsubishi</strong> reportedly mulling deals to extract value from LNG Canada's Kitimat terminal</li>
-            <li>Could bring in outside investors while maintaining equity stakes</li>
-            <li>Expansion financing discussions underway; Coastal GasLink pipeline not included</li>
+            <li>SM Energy: 76.5% of shares represented, 99.1% voted yes</li>
+            <li>Civitas: 82.9% of shares represented, 97.7% voted yes</li>
+            <li>Creates a leading Permian and DJ Basin operator with "top-tier assets"</li>
+            <li>Combined company will trade as SM Energy</li>
         </ul>
     </div>
-    
+
     <div class="section">
-        <h2>🏛️ Regulatory & Policy</h2>
-        <h3>California Offshore Drilling Push</h3>
+        <h2>⚡ Power & Energy Infrastructure</h2>
+        <h3>NextEra Eyes Nuclear Expansion for Data Centers</h3>
         <ul>
-            <li>Trump administration's <strong>Bureau of Ocean Energy Management</strong> issued call for nominations</li>
-            <li>Inviting oil companies to identify areas for potential <strong>Southern and Central California offshore lease sales</strong> — could happen as early as 2027</li>
-            <li>Major policy shift; no new California offshore leases have been sold in decades</li>
-        </ul>
-        
-        <h3>"Drill, Baby, Drill" Challenges</h3>
-        <ul>
-            <li>Washington Post op-ed notes industry is <strong>lukewarm on aggressive drilling push</strong> with current ~$60-65 WTI prices</li>
-            <li>Administration also weighing a <strong>state fuel tax cap</strong> that could provide relief at California pumps</li>
+            <li><strong>NextEra Energy</strong> considering expanding nuclear fleet to power data centers; in advanced discussions for additional 9 GW of data center load (<a href="https://www.reuters.com/sustainability/climate-energy/nextera-energy-beats-fourth-quarter-profit-estimates-2026-01-27/">Reuters</a>)</li>
+            <li>Can add 6 GW of new nuclear at existing sites; also evaluating greenfield advanced nuclear</li>
+            <li>43% of projected U.S. power demand growth through 2030 linked to data center buildouts</li>
+            <li>Beat Q4 profit estimates; Florida Power & Light net income up 13.4% YoY</li>
+            <li>NextEra Energy Resources added 13.5 GW of renewables/storage to backlog in 2025</li>
         </ul>
     </div>
     
@@ -93,8 +169,21 @@
         <h2>🔵 Alaska LNG Project</h2>
         <h3>Glenfarne Announces Progress</h3>
         <ul>
-            <li>Alaska LNG project continues to advance under Glenfarne's development</li>
-            <li>Major infrastructure project aimed at monetizing North Slope gas reserves</li>
+            <li><strong>Glenfarne Group</strong> announced major preliminary agreements advancing Alaska LNG into early construction phase (<a href="https://www.newsminer.com/news/local_news/glenfarne-announces-next-wave-of-nonbinding-agreements/article_e78f87fd-9434-4cc2-8525-79e85c3ee6ca.html">News-Miner</a>)</li>
+            <li>Contracts involve pipeline manufacturers, gas suppliers/buyers, and steel pipe orders</li>
+            <li><strong>ExxonMobil</strong> and <strong>Hilcorp Alaska</strong> signed conditional supply contracts</li>
+            <li><strong>ConocoPhillips</strong> "remains firmly committed" to supporting the project</li>
+            <li><strong>Enstar</strong> (Southcentral's largest gas utility) signed non-binding letter for 30-year gas supply</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🏛️ Regulatory & Policy</h2>
+        <h3>"Drill, Baby, Drill" Industry Response</h3>
+        <ul>
+            <li>Washington Post op-ed notes oil industry is lukewarm on aggressive drilling push with current ~$60-65 WTI prices (<a href="https://www.washingtonpost.com/opinions/2026/01/27/trump-oil-energy-prices/">WaPo</a>)</li>
+            <li>Analysts note Trump administration unlikely to take steps contrary to U.S. oil/gas industry interests</li>
+            <li>Europe's growing reliance on U.S. natural gas increasing Trump's leverage (<a href="https://www.nytimes.com/2026/01/26/business/europe-natural-gas-united-states-russia.html">NYT</a>)</li>
         </ul>
     </div>
     
