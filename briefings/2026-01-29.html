@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil & Gas Briefing - January 29, 2026</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h1 { color: #0d47a1; border-bottom: 3px solid #1565c0; padding-bottom: 0.5rem; }
+        h2 { color: #1565c0; margin-top: 2rem; }
+        h3 { color: #1976d2; }
+        .date { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        
+        /* Audio Player Styles */
+        .audio-player {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+        .audio-player h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .audio-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+        .audio-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        .audio-btn.play-btn {
+            width: 56px;
+            height: 56px;
+            background: white;
+            color: #0d47a1;
+            font-size: 1.5rem;
+        }
+        .audio-btn.play-btn:hover {
+            background: #e3f2fd;
+        }
+        .skip-label {
+            font-size: 0.65rem;
+            position: absolute;
+            bottom: 2px;
+        }
+        .audio-btn.skip {
+            position: relative;
+            font-size: 1rem;
+        }
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .companies-box {
+            background: #e3f2fd;
+            border: 2px solid #1565c0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .companies-box h2 { margin-top: 0; color: #0d47a1; }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .company-list li {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #1565c0;
+            font-size: 0.9rem;
+        }
+        .section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 { margin-top: 0; }
+        ul { padding-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+        strong { color: #0d47a1; }
+        a { color: #1565c0; }
+        .back { margin-bottom: 1rem; }
+        .back a { color: #666; text-decoration: none; }
+        .back a:hover { text-decoration: underline; }
+        footer { margin-top: 2rem; color: #666; font-size: 0.85rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+        .breaking { background: #fff3e0; border-left: 4px solid #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="../">← All Briefings</a></div>
+    
+    <h1>🛢️ Daily Oil & Gas Briefing</h1>
+    <p class="date">Thursday, January 29, 2026</p>
+    
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <h2>🎧 Listen to Today's Briefing</h2>
+        <div class="audio-controls">
+            <button class="audio-btn skip" onclick="skip(-10)" title="Back 10s">
+                ⏪
+                <span class="skip-label">10</span>
+            </button>
+            <button class="audio-btn play-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause">
+                ▶
+            </button>
+            <button class="audio-btn skip" onclick="skip(10)" title="Forward 10s">
+                ⏩
+                <span class="skip-label">10</span>
+            </button>
+            <div class="progress-container">
+                <div class="progress-bar" onclick="seek(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">--:--</span>
+                </div>
+            </div>
+        </div>
+        <audio id="audioPlayer" src="../audio/2026-01-29.mp3" preload="metadata"></audio>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        }
+        
+        function skip(seconds) {
+            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+        }
+        
+        function seek(e) {
+            const rect = e.target.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+        
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+        
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progressFill.style.width = '0%';
+        });
+    </script>
+    
+    <div class="companies-box">
+        <h2>📋 O&G Companies in Today's Brief</h2>
+        <ul class="company-list">
+            <li>ExxonMobil</li>
+            <li>Chevron</li>
+            <li>ConocoPhillips</li>
+            <li>Lukoil</li>
+            <li>Carlyle Group</li>
+            <li>BP</li>
+            <li>Shell</li>
+            <li>Enbridge</li>
+            <li>Occidental</li>
+            <li>Kinder Morgan</li>
+            <li>BYD</li>
+            <li>PDVSA</li>
+        </ul>
+    </div>
+
+    <div class="section breaking">
+        <h2>🚨 BREAKING: Carlyle to Acquire Lukoil's $22B International Assets</h2>
+        <ul>
+            <li><strong>Carlyle Group</strong> has agreed to purchase most of <strong>Lukoil's</strong> international assets, valued at approximately <strong>$22 billion</strong> by analysts (<a href="https://www.reuters.com/business/energy/russias-lukoil-agrees-sell-international-assets-carlyle-2026-01-29/">Reuters</a>)</li>
+            <li>Russia's second-largest oil producer forced to divest under U.S. sanctions imposed three months ago</li>
+            <li>Deal includes Lukoil International GmbH, the holding company for foreign assets</li>
+            <li>Assets include stakes in Kazakhstan's Karachaganak and Tengiz fields, plus 12.5% of Caspian Pipeline Consortium (<a href="https://oilprice.com/Latest-Energy-News/World-News/Lukoil-Agrees-to-Sell-International-Assets-to-Carlyle.html">OilPrice</a>)</li>
+            <li>Transaction pending OFAC and other regulatory approvals; excludes Kazakhstan holdings</li>
+            <li>Iraq's West Qurna 2 field being negotiated separately with <strong>Chevron</strong></li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🔥 Natural Gas Markets — Historic Price Spike</h2>
+        <h3>Henry Hub Smashes All-Time Records</h3>
+        <ul>
+            <li><strong>Henry Hub</strong> spot prices surged to all-time high of <strong>$30.565/MMBtu</strong> on Monday — unprecedented in market history (<a href="https://naturalgasintel.com/news/henry-hub-prices-smash-all-time-records-as-winter-storm-fern-lng-tag-team-to-tighten-balances/">Natural Gas Intelligence</a>)</li>
+            <li>U.S. natural gas futures jumped <strong>more than 119%</strong> over five days through Jan. 26 — largest increase since 1990 (<a href="https://www.tradingview.com/news/zacks:2d901e579094b:0-energy-etfs-to-gain-as-arctic-blast-ignites-us-natural-gas-price-rally/">TradingView</a>)</li>
+            <li>Home heating prices soaring to highest levels since 2022 across the nation (<a href="https://www.yahoo.com/news/articles/nj-heating-prices-soar-amid-092026243.html">Yahoo</a>)</li>
+            <li>EIA had forecast mild winter with $3.38/MMBtu average for Q1 — now projecting ~$3.70/MMBtu</li>
+            <li>Another blast of arctic cold forecast to spread southward, risking further disruptions</li>
+        </ul>
+        
+        <h3>Unusual Move: U.S. LNG Plants Import Cargoes</h3>
+        <ul>
+            <li><strong>BP</strong> and <strong>Shell</strong> imported LNG into the U.S. from Trinidad during the freeze — highly unusual for the world's largest LNG exporter (<a href="https://www.reuters.com/business/energy/us-lng-plants-imported-cargoes-during-winter-storm-natural-gas-prices-hit-2026-01-28/">Reuters</a>)</li>
+            <li>Cargoes sent to <strong>Elba Island</strong> (Georgia) and <strong>Cove Point</strong> (Maryland) — both normally export terminals</li>
+            <li>Elba Island stopped pulling U.S. grid gas over the weekend as storm raged</li>
+            <li><strong>Kinder Morgan's</strong> Elba Island expecting Paris Knutsen arrival with Trinidad cargo today</li>
+            <li>"With prices over $100/MMBtu it made sense to bring in cargoes" — Poten & Partners analyst</li>
+            <li>Jones Act prevents U.S.-to-U.S. LNG transfers, forcing international sourcing</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🌍 International Developments</h2>
+        <h3>Chevron Negotiates Iraq's West Qurna 2</h3>
+        <ul>
+            <li><strong>Chevron</strong> pushing Iraq for improved profit-sharing terms before taking over West Qurna 2 from <strong>Lukoil</strong> (<a href="https://oilprice.com/Energy/Crude-Oil/Chevron-Eyes-Lukoils-Iraqi-Oilfieldbut-Only-on-Better-Terms.html">OilPrice</a>)</li>
+            <li>Iraq nationalized the giant field after U.S. sanctions forced Lukoil exit</li>
+            <li>Field accounts for <strong>~0.5% of global oil supply</strong> and nearly 10% of Iraq's output</li>
+            <li>Lukoil has until <strong>February 28</strong> to divest its 75% stake under sanctions regime (<a href="https://www.firstpost.com/business/chevron-better-terms-buy-iraq-west-qurna-2-oilfield-lukoil-nationalisation-13973329.html">FirstPost</a>)</li>
+            <li>Any agreement requires Iraqi cabinet approval; negotiations ongoing</li>
+        </ul>
+        
+        <h3>Venezuela Sanctions Relief Advancing</h3>
+        <ul>
+            <li>U.S. to issue general license lifting some sanctions on Venezuelan oil industry following Maduro's removal (<a href="https://www.reuters.com/business/energy/us-issue-general-license-soon-lifting-some-sanctions-venezuelan-oil-industry-2026-01-27/">Reuters</a>)</li>
+            <li>Washington facilitating $2 billion oil supply deal between Caracas and U.S.</li>
+            <li>Trump demanding Venezuela supply <strong>50 million barrels</strong> of crude to United States (<a href="https://oilprice.com/Latest-Energy-News/World-News/US-Considers-Sanctions-Relief-to-Revive-Venezuelas-Oil-Output.html">OilPrice</a>)</li>
+            <li>Venezuela's acting president says U.S. has started unblocking frozen sanctioned funds</li>
+            <li><strong>Citgo</strong> bought Venezuelan oil for first time since 2019</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🔬 Technology & Low-Carbon Initiatives</h2>
+        <h3>ExxonMobil Expands Carbon Capture in Louisiana</h3>
+        <ul>
+            <li><strong>ExxonMobil</strong> plans to start up <strong>three more CCS projects in Louisiana</strong> in 2026 (<a href="https://blackchronicle.com/southeast/louisiana-southeast/exxon-ramps-up-low-carbon-solutions-business-on-gulf-coast/">Black Chronicle</a>)</li>
+            <li>Louisiana's CCS leadership has attracted <strong>$76 billion</strong> in potential new investments as of 2025</li>
+            <li>Projects include data centers, steel manufacturers, and LNG producers — representing ~17,000 new jobs</li>
+            <li>Low Carbon Solutions supporting modernization of Louisiana's manufacturing and O&G industries</li>
+        </ul>
+        
+        <h3>ExxonMobil-BYD Expand Hybrid EV Partnership</h3>
+        <ul>
+            <li><strong>ExxonMobil</strong> and China's <strong>BYD</strong> signed new strategic MoU on January 26 to expand hybrid EV R&D (<a href="https://www.tradingview.com/news/zacks:da9de98f1094b:0-byd-exxonmobil-boost-cooperation-in-hybrid-ev-innovation/">TradingView</a>)</li>
+            <li>Partnership focuses on joint R&D, technical collaboration, and supply-chain support for plug-in hybrids</li>
+            <li>Builds on existing long-term relationship between the companies (<a href="https://autonews.gasgoo.com/articles/market-industry/byd-and-exxonmobil-sign-strategic-cooperation-memorandum-of-understanding-2016498727592501248">Gasgoo</a>)</li>
+            <li>Strategic move broadens ExxonMobil's non-oil partnerships and EV exposure</li>
+            <li>Deal attracting political attention amid U.S.-China trade tensions</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>⚠️ Safety & Operations — Alaska</h2>
+        <h3>ConocoPhillips Alaska Drilling Proceeds Despite Rig Accident</h3>
+        <ul>
+            <li><strong>ConocoPhillips</strong> executives called destruction of Doyon Rig 26 ("The Beast") a "sad day" but say impact will be minimal (<a href="https://www.alaskasnewssource.com/2026/01/29/conocophillips-execs-call-doyon-oil-rig-toppling-sad-day-no-major-impacts-expected/">Alaska's News Source</a>)</li>
+            <li>Federal judge ruled <strong>ConocoPhillips Alaska can proceed</strong> with winter drilling program in National Petroleum Reserve (<a href="https://www.adn.com/business-economy/energy/2026/01/28/conocophillips-winter-drilling-program-in-petroleum-reserve-can-proceed-judge-rules/">Anchorage Daily News</a>)</li>
+            <li>Company identified <strong>Doyon 142</strong> as substitute rig; 4 new wells planned this winter unaffected (<a href="https://alaskapublic.org/news/economy/2026-01-28/conocophillips-plans-for-4-new-arctic-wells-unaffected-by-toppled-rig-company-says">Alaska Public</a>)</li>
+            <li>"Our exploration work plan for this winter is going to be on track" — ConocoPhillips spokesperson</li>
+            <li>No material change expected to long-term production forecasts</li>
+            <li>Willow project expansion and exploration continues near Nuiqsut</li>
+        </ul>
+        
+        <h3>ConocoPhillips Extends Libya Concessions</h3>
+        <ul>
+            <li><strong>ConocoPhillips</strong>, <strong>TotalEnergies</strong>, and Libya's NOC extended Waha concessions to 2050 (<a href="https://www.rigzone.com/news/libya_extends_waha_concessions_to_2050-28-jan-2026-182868-article/">Rigzone</a>)</li>
+            <li>New fiscal terms to increase production from current <strong>370,000 boe/day</strong></li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🏛️ Regulatory & Policy</h2>
+        <h3>Forest Service Updates Oil & Gas Leasing Rule</h3>
+        <ul>
+            <li>USDA Forest Service finalized revisions to federal oil and gas leasing regulations for National Forest System lands (<a href="https://www.dailyfly.com/2026/01/27/usda-forest-service-issues-revised-oil-and-gas-leasing-rule/">DailyFly</a>)</li>
+            <li>Rule (36 CFR 228 Subpart E) clarifies requirements and streamlines compliance monitoring (<a href="https://www.federalregister.gov/documents/2026/01/28/2026-01655/oil-and-gas-resources">Federal Register</a>)</li>
+            <li>Part of Trump's National Energy Emergency executive orders to "unleash American energy"</li>
+            <li>Aims to eliminate "outdated and burdensome processes" per Interior Secretary Burgum</li>
+        </ul>
+        
+        <h3>EU Exempts U.S. Gas from Russian Ban Checks</h3>
+        <ul>
+            <li>European Union will exempt U.S. and Qatari gas from extra compliance checks under upcoming Russian gas ban (<a href="https://www.reuters.com/sustainability/boards-policy-regulation/eu-exempt-us-qatari-gas-extra-checks-under-its-russian-gas-ban-draft-shows-2026-01-28/">Reuters</a>)</li>
+            <li>Draft European Commission document signals continued strong EU demand for U.S. LNG</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>📊 Market & Corporate Notes</h2>
+        <h3>Enbridge: Safe Dividend Stock Pick for 2026</h3>
+        <ul>
+            <li><strong>Enbridge</strong> highlighted as top high-yield dividend pick for 2026 (<a href="https://www.forbes.com/sites/brettowens/2026/01/28/this-high-yield-gas-stock-is-a-top-pick-for-2026/">Forbes</a>)</li>
+            <li>Pipeline network moves <strong>20% of U.S. natural gas</strong> and <strong>30% of North American crude production</strong></li>
+            <li>Decades of consecutive dividend raises with manageable payout ratio (<a href="https://www.aol.com/articles/could-buying-enbridge-stock-today-032500268.html">AOL</a>)</li>
+            <li>Stock has returned <strong>1,700%</strong> to shareholders since 2001 (dividend-adjusted)</li>
+        </ul>
+        
+        <h3>Occidental Earnings Preview</h3>
+        <ul>
+            <li><strong>Occidental Petroleum</strong> Q4 2025 earnings scheduled for <strong>February 18, 2026</strong> (<a href="https://www.ad-hoc-news.de/boerse/news/ueberblick/occidental-petroleum-s-strategic-shift-faces-key-test-with-upcoming/68526797">Ad-hoc News</a>)</li>
+            <li>Zacks Research downgraded OXY to "Strong Sell" with lowered 2026-2027 EPS estimates</li>
+            <li>Strategic shift facing key test with upcoming results</li>
+        </ul>
+    </div>
+    
+    <footer>
+        <p>Compiled by Cam • <a href="../">View all briefings</a></p>
+    </footer>
+</body>
+</html>
