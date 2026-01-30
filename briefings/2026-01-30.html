@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil & Gas Briefing - January 30, 2026</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h1 { color: #0d47a1; border-bottom: 3px solid #1565c0; padding-bottom: 0.5rem; }
+        h2 { color: #1565c0; margin-top: 2rem; }
+        h3 { color: #1976d2; }
+        .date { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        
+        /* Audio Player Styles */
+        .audio-player {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+        .audio-player h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .audio-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+        .audio-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        .audio-btn.play-btn {
+            width: 56px;
+            height: 56px;
+            background: white;
+            color: #0d47a1;
+            font-size: 1.5rem;
+        }
+        .audio-btn.play-btn:hover {
+            background: #e3f2fd;
+        }
+        .skip-label {
+            font-size: 0.65rem;
+            position: absolute;
+            bottom: 2px;
+        }
+        .audio-btn.skip {
+            position: relative;
+            font-size: 1rem;
+        }
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .companies-box {
+            background: #e3f2fd;
+            border: 2px solid #1565c0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .companies-box h2 { margin-top: 0; color: #0d47a1; }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .company-list li {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #1565c0;
+            font-size: 0.9rem;
+        }
+        .section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 { margin-top: 0; }
+        ul { padding-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+        strong { color: #0d47a1; }
+        a { color: #1565c0; }
+        .back { margin-bottom: 1rem; }
+        .back a { color: #666; text-decoration: none; }
+        .back a:hover { text-decoration: underline; }
+        footer { margin-top: 2rem; color: #666; font-size: 0.85rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+        .breaking { background: #fff3e0; border-left: 4px solid #ff9800; }
+        .earnings { background: #e8f5e9; border-left: 4px solid #4caf50; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="../">← All Briefings</a></div>
+    
+    <h1>🛢️ Daily Oil & Gas Briefing</h1>
+    <p class="date">Friday, January 30, 2026</p>
+    
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <h2>🎧 Listen to Today's Briefing</h2>
+        <div class="audio-controls">
+            <button class="audio-btn skip" onclick="skip(-10)" title="Back 10s">
+                ⏪
+                <span class="skip-label">10</span>
+            </button>
+            <button class="audio-btn play-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause">
+                ▶
+            </button>
+            <button class="audio-btn skip" onclick="skip(10)" title="Forward 10s">
+                ⏩
+                <span class="skip-label">10</span>
+            </button>
+            <div class="progress-container">
+                <div class="progress-bar" onclick="seek(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">--:--</span>
+                </div>
+            </div>
+        </div>
+        <audio id="audioPlayer" src="../audio/2026-01-30.mp3" preload="metadata"></audio>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        }
+        
+        function skip(seconds) {
+            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+        }
+        
+        function seek(e) {
+            const rect = e.target.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+        
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+        
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progressFill.style.width = '0%';
+        });
+    </script>
+    
+    <div class="companies-box">
+        <h2>📋 O&G Companies in Today's Brief</h2>
+        <ul class="company-list">
+            <li>ExxonMobil</li>
+            <li>Chevron</li>
+            <li>Devon Energy</li>
+            <li>Coterra Energy</li>
+            <li>ConocoPhillips</li>
+            <li>Suncor</li>
+            <li>Occidental</li>
+            <li>EOG Resources</li>
+            <li>PDVSA</li>
+            <li>Trans Mountain</li>
+            <li>Cenovus</li>
+            <li>Microsoft</li>
+        </ul>
+    </div>
+
+    <div class="section earnings">
+        <h2>📈 Q4 EARNINGS: ExxonMobil Beats Estimates</h2>
+        <ul>
+            <li><strong>ExxonMobil</strong> reported Q4 2025 adjusted EPS of <strong>$1.71 vs $1.68 expected</strong> — beating Wall Street estimates despite oil's biggest annual price decline since 2020 (<a href="https://www.cnbc.com/2026/01/30/exxonmobil-xom-4q-2025-earnings.html">CNBC</a>)</li>
+            <li>Revenue of <strong>$82.31 billion</strong> vs $81.43 billion expected</li>
+            <li>Achieved <strong>highest full-year net production in over 40 years</strong> at 4.7 million barrels per day (<a href="https://investor.exxonmobil.com/company-information/press-releases/detail/1200/exxonmobil-announces-2025-results">ExxonMobil IR</a>)</li>
+            <li>Q4 production hit <strong>4.98 million bpd</strong> with Permian Basin and Guyana setting output records</li>
+            <li>Full-year 2025 earnings: <strong>$28.8 billion</strong> with $37 billion in shareholder payouts (<a href="https://www.stocktitan.net/news/XOM/exxon-mobil-announces-2025-kn0165yqsm65.html">Stock Titan</a>)</li>
+            <li>CapEx guidance: <strong>$27-29 billion for 2026</strong>, down from $29 billion in 2025</li>
+            <li>CEO Darren Woods told Trump that Venezuela is <strong>"uninvestable"</strong> — but ready to send technical team to evaluate the industry (<a href="https://abcnews.go.com/Business/wireStory/exxon-mobil-reports-strong-quarterly-profit-solid-production-129697501">ABC News</a>)</li>
+        </ul>
+    </div>
+    
+    <div class="section earnings">
+        <h2>📈 Q4 EARNINGS: Chevron Hits Record Production</h2>
+        <ul>
+            <li><strong>Chevron</strong> reported Q4 2025 adjusted EPS of <strong>$1.52 vs $1.45 expected</strong> — beating estimates as record production offset lower crude prices (<a href="https://www.cnbc.com/2026/01/30/chevron-cxv-q4-2025-earnings-.html">CNBC</a>)</li>
+            <li>Q4 production hit <strong>4.05 million bpd</strong> — up 21% from year-ago period</li>
+            <li>U.S. production up <strong>16%</strong>, worldwide up <strong>12%</strong> in 2025 to record levels</li>
+            <li><strong>Quarterly dividend increased 4%</strong> to $1.78 per share</li>
+            <li>CEO Mike Wirth: Chevron can ramp Venezuela production by <strong>50% over 18-24 months</strong> under right conditions (<a href="https://www.nytimes.com/2026/01/30/business/energy-environment/chevron-exxon-mobil-earnings.html">NY Times</a>)</li>
+            <li>Wall Street views Chevron as <strong>best-positioned U.S. oil major</strong> to benefit from Venezuela intervention</li>
+            <li>U.S. refining business swung to <strong>$230 million profit</strong> from $348 million loss year-ago</li>
+        </ul>
+    </div>
+
+    <div class="section breaking">
+        <h2>🚨 M&A: Devon Energy & Coterra in Advanced Merger Talks</h2>
+        <ul>
+            <li><strong>Devon Energy</strong> and <strong>Coterra Energy</strong> could announce agreement to merge <strong>as soon as next week</strong> (<a href="https://www.reuters.com/legal/litigation/coterra-energy-devon-energy-advanced-talks-merge-source-says-2026-01-29/">Reuters</a>)</li>
+            <li>Would be the <strong>largest U.S. shale deal in almost two years</strong></li>
+            <li>Expected to be billed as a <strong>merger of equals</strong> (<a href="https://www.tradingview.com/news/reuters.com,2026:newsml_L4N3YU2UC:0-coterra-energy-and-devon-energy-in-advanced-talks-to-merge-source-says/">TradingView</a>)</li>
+            <li>Both companies have operations in the <strong>Delaware Basin (Permian)</strong> and <strong>Oklahoma's Anadarko Basin</strong></li>
+            <li>Consolidation arguments remain strong: economies of scale, cost control, securing prime development land</li>
+            <li>Deal comes as oil prices spiked Thursday on concerns U.S. could take military action against Iran</li>
+            <li>Coterra shares rose <strong>2.6%</strong> on the news; Devon marginally higher</li>
+        </ul>
+    </div>
+    
+    <div class="section breaking">
+        <h2>🌎 Venezuela Oil Industry Undergoes Historic Overhaul</h2>
+        <ul>
+            <li>Acting President <strong>Delcy Rodríguez</strong> signed sweeping oil reform law <strong>opening sector to privatization</strong> — reversing 20+ years of socialist policy (<a href="https://abcnews.go.com/International/wireStory/venezuelas-acting-president-signs-oil-industry-overhaul-easing-129682040">ABC News</a>)</li>
+            <li>Legislation ends <strong>PDVSA's monopoly</strong> over production, sales, and pricing</li>
+            <li>Private companies can now assume <strong>full management of activities</strong> at own expense and risk (<a href="https://www.nytimes.com/2026/01/29/world/americas/venezuela-new-law-oil-foreign-companies.html">NY Times</a>)</li>
+            <li>New law allows <strong>independent arbitration</strong> — critical for luring back hesitant U.S. majors like <strong>ExxonMobil</strong> and <strong>ConocoPhillips</strong> whose assets were seized under Chávez</li>
+            <li>U.S. Treasury simultaneously began <strong>easing sanctions</strong> on Venezuelan oil</li>
+            <li>Rodríguez spoke with <strong>President Trump and Secretary Rubio</strong> on Thursday</li>
+            <li>U.S. overseeing sale of <strong>tens of millions of barrels</strong> from Venezuela's reserves — largest proven crude reserves in the world</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>⚠️ Alaska Operations: ConocoPhillips Drilling Proceeds Despite Rig Loss</h2>
+        <ul>
+            <li><strong>ConocoPhillips</strong> says winter drilling program <strong>unaffected</strong> after Doyon Rig 26 "The Beast" tipped over and caught fire Friday (<a href="https://www.knba.org/news/2026-01-29/conocophillips-plans-for-4-new-arctic-wells-unaffected-by-toppled-rig-company-says">KNBA</a>)</li>
+            <li>10-million-pound rig — largest mobile land rig in North America — was being transported near Nuiqsut</li>
+            <li><strong>8 workers treated for minor injuries</strong>; no serious harm reported (<a href="https://www.alaskasnewssource.com/2026/01/29/conocophillips-execs-call-doyon-oil-rig-toppling-sad-day-no-major-impacts-expected/">Alaska News Source</a>)</li>
+            <li>Company identified <strong>Doyon 142 as substitute rig</strong> — all 4 planned exploration wells still on track</li>
+            <li>Spill contained: ~4,000 gallons diesel and 600 gallons hydraulic oil on snow-covered tundra</li>
+            <li>Federal judge <strong>denied environmental groups' request</strong> to halt winter drilling in National Petroleum Reserve-Alaska (<a href="https://www.adn.com/business-economy/energy/2026/01/28/conocophillips-winter-drilling-program-in-petroleum-reserve-can-proceed-judge-rules/">Anchorage Daily News</a>)</li>
+            <li>"Our exploration work plan for this winter is going to be on track" — ConocoPhillips VP Barry Romberg</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🇨🇦 Canadian Energy Updates</h2>
+        <h3>Suncor: Record 2025 Performance</h3>
+        <ul>
+            <li><strong>Suncor Energy</strong> achieved <strong>Investor Day targets a year ahead of schedule</strong> in 2025, supported by record operational performance (<a href="https://www.tradingview.com/news/zacks:3b9f84eb5094b:0-suncor-energy-to-report-q4-earnings-here-s-what-to-expect/">TradingView</a>)</li>
+            <li>RBC maintains <strong>Outperform rating</strong> with C$69 price target (<a href="https://www.marketscreener.com/news/rbc-maintains-suncor-energy-s-outperform-rating-c-69-price-target-ce7e5bdfdb8ff723">MarketScreener</a>)</li>
+            <li>Well-positioned for <strong>heavy oil demand shifts</strong> following Venezuela's political changes (<a href="https://seekingalpha.com/article/4863698-venezuela-catalysts-can-benefit-suncor-energy-more-than-petrobras">Seeking Alpha</a>)</li>
+        </ul>
+        
+        <h3>Trans Mountain Pipeline Expansion</h3>
+        <ul>
+            <li>Alberta Premier <strong>Danielle Smith</strong> and BC Premier <strong>David Eby</strong> share "common ground" on <strong>Trans Mountain expansion</strong> (<a href="https://www.theglobeandmail.com/politics/article-carney-smith-eby-pipeline-first-ministers-dinner/">Globe and Mail</a>)</li>
+            <li>Smith to release proposal for an <strong>entirely new pipeline in June</strong></li>
+            <li>Pledged to keep BC Premier in the loop on pipeline plans</li>
+        </ul>
+        
+        <h3>Canada-India Energy Relations Renewed</h3>
+        <ul>
+            <li>India and Canada <strong>officially renewed Ministerial Energy Dialogue</strong> at India Energy Week 2026 in Goa (<a href="https://www.businesstoday.in/latest/corporate/story/india-and-canada-relaunch-energy-dialogue-oil-india-to-explore-canadian-critical-minerals-513359-2026-01-29">Business Today</a>)</li>
+            <li>India seen as <strong>ideal target for increased Canadian energy exports</strong> (<a href="https://www.theglobeandmail.com/business/article-canada-india-energy-exports/">Globe and Mail</a>)</li>
+            <li><strong>Cenovus</strong> operations highlighted in export discussions</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>🔬 Technology & Digital</h2>
+        <h3>AI Datacenter Demand Driving Gas Power Surge</h3>
+        <ul>
+            <li>U.S. gas power projects <strong>tripled in 2025</strong> driven by AI datacenter demand (<a href="https://www.theregister.com/2026/01/29/ai_datacenter_boom_tripled_us_gas_power_builds/">The Register</a>)</li>
+            <li><strong>Microsoft</strong> admits it's open to deploying <strong>natural gas with carbon capture</strong> alongside renewables to meet datacenter demand</li>
+            <li>Global gas-fired power capacity expected to grow nearly <strong>50%</strong> on projects in development (<a href="https://www.theguardian.com/environment/2026/jan/29/gas-power-ai-climate">The Guardian</a>)</li>
+            <li>AI in Energy market projected to reach <strong>$18.31 billion</strong> by 2030 — opportunities in smart grid management, predictive maintenance (<a href="https://www.globenewswire.com/news-release/2026/01/29/3228380/28124/en/Artificial-Intelligence-AI-in-Energy-and-Power-Research-Report-2026-18-31-Bn-Market-Opportunities-Trends-Competitive-Analysis-Strategies-and-Forecasts-2020-2025-2025-2030F-2035F.html">GlobeNewswire</a>)</li>
+        </ul>
+        
+        <h3>ExxonMobil Guyana Pipeline Monitoring</h3>
+        <ul>
+            <li><strong>ExxonMobil Guyana</strong> activated Sentinel Proactive monitoring technology for <strong>real-time subsea pipeline surveillance</strong> (<a href="https://www.marketscreener.com/news/exxonmobil-installs-monitoring-system-for-guyana-subsea-pipeline-ce7e5bdede8df420">MarketScreener</a>)</li>
+            <li>Emphasis on shallow coastal areas where vessel anchoring poses greatest danger</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>📊 Market & Analyst Notes</h2>
+        <h3>Occidental Petroleum</h3>
+        <ul>
+            <li><strong>Occidental</strong> stock testing investor nerves as crude prices hold firm (<a href="https://www.ad-hoc-news.de/boerse/news/ueberblick/occidental-petroleum-s-stock-tests-investor-nerves-as-oil-optimism-meets/68532069">Ad-hoc News</a>)</li>
+            <li>Wall Street broadly constructive but path forward "increasingly binary" — execute on shale and carbon capture or risk re-rating</li>
+            <li>Q4 2025 earnings scheduled for <strong>February 18, 2026</strong></li>
+        </ul>
+        
+        <h3>EOG Resources</h3>
+        <ul>
+            <li>Morgan Stanley cut price target for <strong>EOG Resources</strong> to <strong>$128 from $138</strong>, maintains Equal Weight (<a href="https://www.insidermonkey.com/blog/morgan-stanley-notes-strong-q4-operations-for-eog-resources-inc-eog-but-soft-cash-flow-1683462/">Insider Monkey</a>)</li>
+            <li>Notes strong Q4 operations but <strong>soft cash flow</strong></li>
+        </ul>
+        
+        <h3>Permian Basin Outlook</h3>
+        <ul>
+            <li>Permian crude production expected to stay <strong>flat at ~6.6 million bpd in 2026</strong> (<a href="https://www.energyandcapital.com/the-oil-stocks-to-own-when-the-permian-peaks/">Energy & Capital</a>)</li>
+            <li>May edge slightly lower in 2027 as rig activity declines alongside weaker prices</li>
+        </ul>
+    </div>
+    
+    <footer>
+        <p>Compiled by Cam • <a href="../">View all briefings</a></p>
+    </footer>
+</body>
+</html>
