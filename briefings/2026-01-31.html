@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil & Gas Briefing - January 31, 2026</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        h1 { color: #0d47a1; border-bottom: 3px solid #1565c0; padding-bottom: 0.5rem; }
+        h2 { color: #1565c0; margin-top: 2rem; }
+        h3 { color: #1976d2; }
+        .date { color: #666; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        
+        /* Audio Player Styles */
+        .audio-player {
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 71, 161, 0.3);
+        }
+        .audio-player h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .audio-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+        }
+        .audio-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        .audio-btn.play-btn {
+            width: 56px;
+            height: 56px;
+            background: white;
+            color: #0d47a1;
+            font-size: 1.5rem;
+        }
+        .audio-btn.play-btn:hover {
+            background: #e3f2fd;
+        }
+        .skip-label {
+            font-size: 0.65rem;
+            position: absolute;
+            bottom: 2px;
+        }
+        .audio-btn.skip {
+            position: relative;
+            font-size: 1rem;
+        }
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .companies-box {
+            background: #e3f2fd;
+            border: 2px solid #1565c0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .companies-box h2 { margin-top: 0; color: #0d47a1; }
+        .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .company-list li {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #1565c0;
+            font-size: 0.9rem;
+        }
+        .section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 { margin-top: 0; }
+        ul { padding-left: 1.5rem; }
+        li { margin: 0.5rem 0; }
+        strong { color: #0d47a1; }
+        a { color: #1565c0; }
+        .back { margin-bottom: 1rem; }
+        .back a { color: #666; text-decoration: none; }
+        .back a:hover { text-decoration: underline; }
+        footer { margin-top: 2rem; color: #666; font-size: 0.85rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+        .breaking { background: #fff3e0; border-left: 4px solid #ff9800; }
+        .earnings { background: #e8f5e9; border-left: 4px solid #4caf50; }
+        .regulatory { background: #fce4ec; border-left: 4px solid #e91e63; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="../">← All Briefings</a></div>
+    
+    <h1>🛢️ Daily Oil & Gas Briefing</h1>
+    <p class="date">Saturday, January 31, 2026</p>
+    
+    <!-- Audio Player -->
+    <div class="audio-player">
+        <h2>🎧 Listen to Today's Briefing</h2>
+        <div class="audio-controls">
+            <button class="audio-btn skip" onclick="skip(-10)" title="Back 10s">
+                ⏪
+                <span class="skip-label">10</span>
+            </button>
+            <button class="audio-btn play-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause">
+                ▶
+            </button>
+            <button class="audio-btn skip" onclick="skip(10)" title="Forward 10s">
+                ⏩
+                <span class="skip-label">10</span>
+            </button>
+            <div class="progress-container">
+                <div class="progress-bar" onclick="seek(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">--:--</span>
+                </div>
+            </div>
+        </div>
+        <audio id="audioPlayer" src="../audio/2026-01-31.mp3" preload="metadata"></audio>
+    </div>
+    
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        }
+        
+        function skip(seconds) {
+            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+        }
+        
+        function seek(e) {
+            const rect = e.target.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+        
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+        
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progressFill.style.width = '0%';
+        });
+    </script>
+    
+    <div class="companies-box">
+        <h2>📋 O&G Companies in Today's Brief</h2>
+        <ul class="company-list">
+            <li>ExxonMobil</li>
+            <li>Chevron</li>
+            <li>ConocoPhillips</li>
+            <li>Imperial Oil</li>
+            <li>Enbridge</li>
+            <li>Occidental</li>
+            <li>Hess</li>
+            <li>Doyon Drilling</li>
+        </ul>
+    </div>
+
+    <div class="section earnings">
+        <h2>📈 Exxon & Chevron Close Out January with Best Month Since 2022</h2>
+        <ul>
+            <li><strong>ExxonMobil</strong> shares up <strong>15% in January</strong> — best monthly performance since October 2022 (<a href="https://www.energyconnects.com/news/oil/2026/january/exxon-chevron-head-for-best-month-since-2022-as-crude-surges/">Energy Connects</a>)</li>
+            <li><strong>Chevron</strong> on pace for <strong>14% January gain</strong>, also its best month since October 2022 (<a href="https://www.ttnews.com/articles/exxon-chevron-best-month-22">TTNews</a>)</li>
+            <li>Rally driven by rising crude prices, geopolitical tensions, and improving fundamentals</li>
+            <li>Both companies reported <strong>all-time record production</strong> in Q4 2025 from Permian Basin and Guyana offshore (<a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-1-30-the-paradox-of-plenty-exxon-and-chevron-hit-record-production-amid-crude-price-slump">Financial Content</a>)</li>
+            <li>Exxon full-year production hit <strong>40-year high at 4.7 million boepd</strong>; targeting 4.9 million in 2026 (<a href="https://www.reuters.com/business/energy/exxon-beats-wall-street-targets-q4-profit-with-help-lower-cost-oil-production-2026-01-30/">Reuters</a>)</li>
+            <li>Chevron benefited from <strong>$53 billion Hess acquisition</strong> integration, gaining partnership stake in prolific Guyana offshore (<a href="https://fortune.com/2026/01/30/exxon-chevron-decline-new-spend-venezuela-wait-see-approach/">Fortune</a>)</li>
+            <li>Exxon plans <strong>$27-29 billion CapEx</strong> in 2026; <strong>$20 billion</strong> in planned share buybacks</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🌎 Venezuela: Big Oil Takes Wait-and-See Approach</h2>
+        <ul>
+            <li><strong>ExxonMobil CEO Darren Woods</strong> says company has technology to extract Venezuela's heavy crude at lower cost, but needs democratic transition before investing (<a href="https://www.cnbc.com/2026/01/30/exxon-ceo-says-venezuela-needs-to-transition-to-democracy-for-oil-investment.html">CNBC</a>)</li>
+            <li><strong>Chevron CEO Mike Wirth</strong> says company prepared to <strong>increase Venezuela production 50%</strong> over next two years under right conditions (<a href="https://www.nytimes.com/2026/01/30/business/energy-environment/chevron-exxon-mobil-earnings.html">NY Times</a>)</li>
+            <li>Both companies declining new spending in Venezuela while taking wait-and-see approach (<a href="https://fortune.com/2026/01/30/exxon-chevron-decline-new-spend-venezuela-wait-see-approach/">Fortune</a>)</li>
+            <li>Chevron is the only U.S. oil major currently operating in Venezuela under special license</li>
+            <li>Woods says Exxon has recovered <strong>"substantial amount"</strong> of money owed after 2007 nationalization (<a href="https://www.reuters.com/business/energy/exxon-chevron-see-glimmer-venezuelas-potential-with-long-road-ahead-2026-01-30/">Reuters</a>)</li>
+        </ul>
+    </div>
+    
+    <div class="section breaking">
+        <h2>🚨 ConocoPhillips: Doyon Rig Cleanup Enters Critical Phase</h2>
+        <ul>
+            <li><strong>ConocoPhillips</strong> executives called toppling of Doyon Rig 26 "The Beast" a <strong>"sad day"</strong> but expect no material impact to production (<a href="https://www.alaskasnewssource.com/2026/01/29/conocophillips-execs-call-doyon-oil-rig-toppling-sad-day-no-major-impacts-expected/">Alaska News Source</a>)</li>
+            <li>Cleanup now in <strong>critical phase</strong> as crews face extreme Arctic conditions — high winds, near-zero visibility</li>
+            <li>Estimated spill: <strong>~4,000 gallons diesel and 600 gallons hydraulic oil</strong> absorbed by snow-covered tundra</li>
+            <li>The <strong>9.5-million-pound rig</strong> — largest mobile land drilling rig in North America — landed less than 500 feet from tributary to Colville River</li>
+            <li><strong>8 workers treated and released</strong> from local clinics with minor injuries</li>
+            <li>Unified command established including <strong>Doyon Drilling</strong>, DEC, EPA, North Slope Borough, and Inupiat Community</li>
+            <li>ConocoPhillips VP Barry Romberg: <strong>"I don't expect any material change to our long-term production forecast"</strong></li>
+            <li>Doyon 142 identified as <strong>substitute rig</strong>; all 4 planned exploration wells still on track</li>
+        </ul>
+    </div>
+    
+    <div class="section breaking">
+        <h2>🇨🇦 Imperial Oil to Shutter Norman Wells After Century of Production</h2>
+        <ul>
+            <li><strong>Imperial Oil</strong> announces it will <strong>end production at Norman Wells, NWT</strong> in Q3 2026 — closing over a century of oil operations (<a href="https://www.cbc.ca/news/canada/north/imperial-oil-end-norman-wells-operations-nwt-9.7068187">CBC News</a>)</li>
+            <li>Closure driven by <strong>declining production</strong> as facility reaches end of lifespan</li>
+            <li>Imperial also operates power plant supplying electricity to Norman Wells community — transition plans underway</li>
+            <li>N.W.T. Premier R.J. Simpson: <strong>"Not a surprise given age of facility"</strong> and oil prices around $60/barrel</li>
+            <li>Senior VP Cheryl Gomez-Smith: <strong>"Today marks the first of many milestones in our closure journey"</strong></li>
+            <li>Final reclamation work <strong>not expected to start until after 2030</strong></li>
+            <li>Analyst Doug Matthews: Field was <strong>"small potatoes"</strong> in Imperial's total production, economically unviable at current prices</li>
+        </ul>
+    </div>
+
+    <div class="section regulatory">
+        <h2>⚖️ Enbridge Line 5: Federal Courts Take Priority</h2>
+        <ul>
+            <li><strong>Enbridge</strong> and State of Michigan agree to let <strong>federal cases play out</strong> before state court arguments in Line 5 pipeline dispute (<a href="https://www.interlochenpublicradio.org/2026-01-31/state-enbridge-agree-to-wait-on-state-court-arguments">Interlochen Public Radio</a>)</li>
+            <li>Key question — whether case belongs in Michigan or federal courts — will be argued <strong>next month before U.S. Supreme Court</strong></li>
+            <li>Separate case on Michigan's standing to sue Enbridge pending before <strong>U.S. Sixth Circuit Court of Appeals</strong></li>
+            <li>Federal judge decision last month ensures Line 5 can <strong>keep moving oil and natural gas liquids</strong> during litigation (<a href="https://www.law360.com/amp/articles/2435122">Law360</a>)</li>
+            <li>Enbridge argues international pipeline safety regulated solely by federal government</li>
+            <li>Michigan wants Line 5 <strong>shut down or moved</strong> from environmentally sensitive Straits of Mackinac</li>
+            <li>Enbridge proposes <strong>encasing pipeline in tunnel</strong> beneath the straits</li>
+        </ul>
+    </div>
+    
+    <div class="section regulatory">
+        <h2>🏛️ Trump Executive Order Targets Cuba Oil Suppliers</h2>
+        <ul>
+            <li>President Trump signed executive order threatening <strong>tariffs on any country selling oil to Cuba</strong>, declaring national security emergency (<a href="https://abcnews.go.com/International/trump-threatens-tariffs-countries-selling-oil-cuba-declaring/story?id=129687112">ABC News</a>)</li>
+            <li>Move primarily targets <strong>Mexico</strong>, the only nation sending meaningful fuel shipments to the island (<a href="https://www.nytimes.com/2026/01/30/world/americas/trump-oil-cuba-government.html">NY Times</a>)</li>
+            <li>Commerce, State, Treasury, Homeland Security secretaries to determine specific tariff levels</li>
+            <li>Order cites Cuba's alliances with <strong>Russia, China, Iran, Hamas and Hezbollah</strong></li>
+            <li>Trump: <strong>"Cuba is a failing nation... I think Cuba will not be able to survive"</strong></li>
+            <li>Comes as Supreme Court may rule on administration's use of emergency powers for tariffs</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📊 Market & Production Notes</h2>
+        <ul>
+            <li><strong>U.S. drilling activity continues to decline</strong> — Permian Basin rig count slipped by 2 to <strong>242 rigs</strong>, down 61 from year-ago levels (<a href="https://oilprice.com/Energy/Crude-Oil/US-Oil-Drilling-Continues-to-Flounder.html">OilPrice.com</a>)</li>
+            <li><strong>Occidental Petroleum</strong> shares rallied <strong>10.5% YTD</strong> in 2026 after declining 7% over past 52 weeks (<a href="https://finance.yahoo.com/news/wall-street-bullish-bearish-occidental-154552097.html">Yahoo Finance</a>)</li>
+            <li>Texas RRC released latest production figures showing continued Permian dominance (<a href="https://www.rigzone.com/news/texas_rrc_reveals_latest_oil_gas_production_figures-30-jan-2026-182898-article/">Rigzone</a>)</li>
+            <li>EIA projects <strong>U.S., Brazil, and Guyana production</strong> will exceed demand growth in 2026, potentially pushing Brent to mid-$50s</li>
+            <li><strong>U.S. supplied 60% of Europe's LNG</strong> imports in January, confirming dominant supplier role (<a href="https://www.reuters.com/business/energy/us-share-europes-lng-imports-increased-60-january-2026-01-30/">Reuters</a>)</li>
+            <li>Standard Chartered forecasts <strong>Brent averaging $62-64/barrel</strong> through mid-2026</li>
+        </ul>
+    </div>
+    
+    <footer>
+        <p>Compiled by Cam • <a href="../">View all briefings</a></p>
+    </footer>
+</body>
+</html>
